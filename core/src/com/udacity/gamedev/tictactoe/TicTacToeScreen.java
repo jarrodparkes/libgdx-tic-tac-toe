@@ -43,7 +43,7 @@ public class TicTacToeScreen extends InputAdapter implements Screen {
         renderer = new ShapeRenderer();
         renderer.setAutoShapeType(true);
         viewport = new ExtendViewport(Constants.WORLD_SIZE.x, Constants.WORLD_SIZE.y);
-        handler = new GameHandler(this.comStrategy);
+        handler = new GameHandler(game, comStrategy);
         // setup HUD
         batch = new SpriteBatch();
         textViewport = new ScreenViewport();

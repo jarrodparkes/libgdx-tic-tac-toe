@@ -12,6 +12,7 @@ public class GameHandler {
 
     public static final String TAG = GameHandler.class.getName();
 
+    TicTacToeGame game;
     Board board;
     HumanPlayer player1;
     AIPlayer player2;
@@ -19,7 +20,8 @@ public class GameHandler {
     Array<Constants.GridPosition> crosses;
     Array<Constants.GridPosition> circles;
 
-    public GameHandler(Strategy comStrategy) {
+    public GameHandler(TicTacToeGame game, Strategy comStrategy) {
+        this.game = game;
         board = new Board();
         player1 = new HumanPlayer(board, PlayerType.PLAYER_X);
         player2 = new AIPlayer(board, PlayerType.PLAYER_O, comStrategy);
@@ -77,6 +79,8 @@ public class GameHandler {
 
     public void render(float delta, ShapeRenderer renderer) {
         // draw playfield
+        renderer.setColor(Constants.PLAYFIELD_COLOR);
+        renderer.circle(Constants.RESET_CENTER.x, Constants.RESET_CENTER.y, Constants.CIRCLE_RADIUS, 20);
         renderer.setColor(Constants.PLAYFIELD_COLOR);
         renderer.rectLine(
                 Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
@@ -235,6 +239,10 @@ public class GameHandler {
                 moveHumanPlayer(Player.PlayerType.PLAYER_X, gridPositionToCellPosition(position));
                 break;
             }
+        }
+
+        if (worldTouch.dst(Constants.RESET_CENTER) < Constants.CIRCLE_RADIUS) {
+            game.showSettingsScreen();
         }
     }
 }

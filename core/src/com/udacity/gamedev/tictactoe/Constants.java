@@ -45,6 +45,8 @@ public class Constants {
     public static final int TWO_NOUGHT_BONUS = -10;
     public static final int ONE_NOUGHT_BONUS = -1;
 
+    public static final Vector2 RESET_CENTER = new Vector2(WORLD_SIZE.x * 3 / 4, WORLD_SIZE.y / 2);
+
     public enum GridPosition {
         LOWER_LEFT(PLAYFIELD_CENTER.x - PLAYFIELD_GRID_SIZE, PLAYFIELD_CENTER.y - PLAYFIELD_GRID_SIZE),
         LOWER_MIDDLE(PLAYFIELD_CENTER.x, PLAYFIELD_CENTER.y - PLAYFIELD_GRID_SIZE),
