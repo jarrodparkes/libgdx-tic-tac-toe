@@ -62,4 +62,17 @@ public class Constants {
             this.position = new Vector2(x, y);
         }
     }
+
+    public static final float SETTINGS_WORLD_SIZE = 480.0f;
+    public static final float SETTINGS_BUBBLE_RADIUS = SETTINGS_WORLD_SIZE / 8.5f;
+    public static final Color SETTINGS_BUBBLE_COLOR = new Color(0.2f, 0.2f, 1, 1);
+    public static final float SETTINGS_LABEL_SCALE = 1.5f;
+
+    public static final Vector2 RANDOM_CENTER = new Vector2(SETTINGS_WORLD_SIZE / 4, SETTINGS_WORLD_SIZE / 2);
+    public static final Vector2 RULE_BASED_CENTER = new Vector2(SETTINGS_WORLD_SIZE / 2, SETTINGS_WORLD_SIZE / 2);
+    public static final Vector2 MINIMAX_CENTER = new Vector2(SETTINGS_WORLD_SIZE * 3 / 4, SETTINGS_WORLD_SIZE / 2);
+
+    public static final String RANDOM_LABEL = "Random";
+    public static final String RULE_BASED_LABEL = "Rules";
+    public static final String MINIMAX_LABEL = "Minimax";
 }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.udacity.gamedev.tictactoe.strategy.MinimaxStrategy;
+import com.udacity.gamedev.tictactoe.strategy.Strategy;
 
 public class TicTacToeScreen extends InputAdapter implements Screen {
 
@@ -27,7 +28,14 @@ public class TicTacToeScreen extends InputAdapter implements Screen {
     BitmapFont font;
 
     // game data
+    TicTacToeGame game;
+    Strategy comStrategy;
     GameHandler handler;
+
+    public TicTacToeScreen(TicTacToeGame game, Strategy comStrategy) {
+        this.game = game;
+        this.comStrategy = comStrategy;
+    }
 
     @Override
     public void show () {
@@ -35,7 +43,7 @@ public class TicTacToeScreen extends InputAdapter implements Screen {
         renderer = new ShapeRenderer();
         renderer.setAutoShapeType(true);
         viewport = new ExtendViewport(Constants.WORLD_SIZE.x, Constants.WORLD_SIZE.y);
-        handler = new GameHandler(new MinimaxStrategy());
+        handler = new GameHandler(this.comStrategy);
         // setup HUD
         batch = new SpriteBatch();
         textViewport = new ScreenViewport();
