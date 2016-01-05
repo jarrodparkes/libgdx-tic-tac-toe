@@ -1,10 +1,8 @@
 package com.udacity.gamedev.tictactoe.board;
 
-
-/**
- * Created by jarrodparkes on 1/3/16.
- */
 public class Cell {
+
+    public static final String TAG = Cell.class.getName();
 
     public enum CellValue {
         EMPTY, NOUGHT, CROSS

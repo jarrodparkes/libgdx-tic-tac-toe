@@ -3,10 +3,9 @@ package com.udacity.gamedev.tictactoe.strategy;
 import com.udacity.gamedev.tictactoe.board.*;
 import com.udacity.gamedev.tictactoe.player.*;
 
-/**
- * Created by jarrodparkes on 1/3/16.
- */
 public class MinimaxStrategy implements Strategy {
+
+    public static final String TAG = MinimaxStrategy.class.getName();
 
     private class MinimaxResults {
         int bestScore;

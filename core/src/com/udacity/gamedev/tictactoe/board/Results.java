@@ -2,11 +2,9 @@ package com.udacity.gamedev.tictactoe.board;
 
 import com.udacity.gamedev.tictactoe.board.Cell.*;
 
-/**
- * Created by jarrodparkes on 1/3/16.
- */
 public class Results {
 
+    public static final String TAG = Results.class.getName();
 
     Boolean hasWinner;
     CellValue winnerType;
@@ -28,7 +26,7 @@ public class Results {
         this.winnerType = winnerType;
     }
 
-    public void hasWinner(boolean hasWinner) {
+    public void setHasWinner(boolean hasWinner) {
         this.hasWinner = hasWinner;
     }
 }

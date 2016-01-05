@@ -1,43 +1,35 @@
 package com.udacity.gamedev.tictactoe;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.math.Vector2;
 import com.udacity.gamedev.tictactoe.board.*;
 import com.udacity.gamedev.tictactoe.player.*;
 import com.udacity.gamedev.tictactoe.player.Player.PlayerType;
 import com.udacity.gamedev.tictactoe.strategy.*;
-import com.udacity.gamedev.tictactoe.Constants.GridPosition.*;
 
-/**
- * Created by jarrodparkes on 1/3/16.
- */
 public class GameHandler {
 
     public static final String TAG = GameHandler.class.getName();
 
     Board board;
-    Player player1;
-    Player player2;
-    Player nextPlayer;
+    HumanPlayer player1;
+    AIPlayer player2;
 
     Array<Constants.GridPosition> crosses;
     Array<Constants.GridPosition> circles;
 
-    public GameHandler(Strategy strategy1) {
+    public GameHandler(Strategy comStrategy) {
         board = new Board();
         player1 = new HumanPlayer(board, PlayerType.PLAYER_X);
-        player2 = new AIPlayer(board, PlayerType.PLAYER_O, strategy1);
-        nextPlayer = player2;
-
+        player2 = new AIPlayer(board, PlayerType.PLAYER_O, comStrategy);
         crosses = new Array<Constants.GridPosition>();
         circles = new Array<Constants.GridPosition>();
     }
 
     public void moveAIPlayer() {
-        AIPlayer currentAIPlayer = (AIPlayer) nextPlayer;
-        CellPosition changedPosition = currentAIPlayer.makeAIMove();
-        didMoveAtPosition(changedPosition, currentAIPlayer.getPlayerType());
+        CellPosition changedPosition = player2.makeAIMove();
+        didMoveAtPosition(changedPosition, player2.getPlayerType());
         checkEndGame();
     }
 
@@ -56,7 +48,6 @@ public class GameHandler {
         if (board.gameOver() == false) {
             moveAIPlayer();
         } else {
-            Gdx.app.log(TAG, "game over");
             endGame();
         }
     }
@@ -79,11 +70,38 @@ public class GameHandler {
     }
 
     public void reset() {
+        crosses.clear();
+        circles.clear();
         board.clearBoard();
-        nextPlayer = player2;
     }
 
     public void render(float delta, ShapeRenderer renderer) {
+        // draw playfield
+        renderer.setColor(Constants.PLAYFIELD_COLOR);
+        renderer.rectLine(
+                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_LINE_THICKNESS);
+        renderer.rectLine(
+                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_LINE_THICKNESS);
+        renderer.rectLine(
+                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_LINE_THICKNESS);
+        renderer.rectLine(
+                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_LINE_THICKNESS);
         // draw an X (needs 150 by 150 space?)
         for (Constants.GridPosition gp: crosses) {
             renderer.setColor(Constants.CROSS_COLOR);
@@ -199,5 +217,24 @@ public class GameHandler {
         }
 
         return finalPosition;
+    }
+
+    public void handleTouch(Vector2 worldTouch) {
+        for (Constants.GridPosition position : Constants.GridPosition.values()) {
+            boolean inX = false;
+            boolean inY = false;
+            if (worldTouch.x > position.position.x - Constants.PLAYFIELD_GRID_SIZE_HALF &&
+                    worldTouch.x < position.position.x + Constants.PLAYFIELD_GRID_SIZE_HALF) {
+                inX = true;
+            }
+            if (worldTouch.y > position.position.y - Constants.PLAYFIELD_GRID_SIZE_HALF &&
+                    worldTouch.y < position.position.y + Constants.PLAYFIELD_GRID_SIZE_HALF) {
+                inY = true;
+            }
+            if (inX && inY) {
+                moveHumanPlayer(Player.PlayerType.PLAYER_X, gridPositionToCellPosition(position));
+                break;
+            }
+        }
     }
 }

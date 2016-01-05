@@ -4,10 +4,9 @@ import com.udacity.gamedev.tictactoe.board.Board;
 import com.udacity.gamedev.tictactoe.board.CellPosition;
 import com.udacity.gamedev.tictactoe.strategy.*;
 
-/**
- * Created by jarrodparkes on 1/3/16.
- */
 public class AIPlayer extends Player {
+
+    public static final String TAG = AIPlayer.class.getName();
 
     Strategy strategy;
 

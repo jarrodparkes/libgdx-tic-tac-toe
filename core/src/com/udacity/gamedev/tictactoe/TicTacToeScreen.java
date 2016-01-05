@@ -11,13 +11,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.udacity.gamedev.tictactoe.Constants.GridPosition;
-import com.udacity.gamedev.tictactoe.player.Player;
 import com.udacity.gamedev.tictactoe.strategy.MinimaxStrategy;
 
-/**
- * Created by jarrodparkes on 12/28/15.
- */
 public class TicTacToeScreen extends InputAdapter implements Screen {
 
     public static final String TAG = TicTacToeScreen.class.getName();
@@ -61,42 +56,16 @@ public class TicTacToeScreen extends InputAdapter implements Screen {
         // clear screen
         Gdx.gl.glClearColor(Constants.BACKGROUND_COLOR.r, Constants.BACKGROUND_COLOR.g, Constants.BACKGROUND_COLOR.b, Constants.BACKGROUND_COLOR.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // setup HUD drawing
+        // setup drawing for HUD
         batch.setProjectionMatrix(textViewport.getCamera().combined);
         // draw HUD
         batch.begin();
         batch.end();
-        // setup world drawing
+        // setup drawing for world
         viewport.apply();
         renderer.setProjectionMatrix(viewport.getCamera().combined);
         // draw world
         renderer.begin(ShapeRenderer.ShapeType.Filled);
-        // draw playfield
-        renderer.setColor(Constants.PLAYFIELD_COLOR);
-        renderer.rectLine(
-                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_LINE_THICKNESS);
-        renderer.rectLine(
-                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_LINE_THICKNESS);
-        renderer.rectLine(
-                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_LINE_THICKNESS);
-        renderer.rectLine(
-                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_LINE_THICKNESS);
         handler.render(delta, renderer);
         renderer.end();
     }
@@ -109,6 +78,17 @@ public class TicTacToeScreen extends InputAdapter implements Screen {
     }
 
     @Override
+    public boolean touchDown (int screenX, int screenY, int pointer, int button) {
+        if (handler.board.gameOver() == false) {
+            Vector2 worldTouch = viewport.unproject(new Vector2(screenX, screenY));
+            handler.handleTouch(worldTouch);
+        } else {
+            handler.reset();
+        }
+        return true;
+    }
+
+    @Override
     public void pause() {}
 
     @Override
@@ -116,32 +96,4 @@ public class TicTacToeScreen extends InputAdapter implements Screen {
 
     @Override
     public void hide() {}
-
-    @Override
-    public boolean touchDown (int screenX, int screenY, int pointer, int button) {
-        if (handler.board.gameOver() == false) {
-            Vector2 worldTouch = viewport.unproject(new Vector2(screenX, screenY));
-
-            for (GridPosition position : GridPosition.values()) {
-                boolean inX = false;
-                boolean inY = false;
-                if (worldTouch.x > position.position.x - Constants.PLAYFIELD_GRID_SIZE_HALF &&
-                        worldTouch.x < position.position.x + Constants.PLAYFIELD_GRID_SIZE_HALF) {
-                    inX = true;
-                }
-                if (worldTouch.y > position.position.y - Constants.PLAYFIELD_GRID_SIZE_HALF &&
-                        worldTouch.y < position.position.y + Constants.PLAYFIELD_GRID_SIZE_HALF) {
-                    inY = true;
-                }
-                if (inX && inY) {
-                    handler.moveHumanPlayer(Player.PlayerType.PLAYER_X, handler.gridPositionToCellPosition(position));
-                    break;
-                }
-            }
-
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

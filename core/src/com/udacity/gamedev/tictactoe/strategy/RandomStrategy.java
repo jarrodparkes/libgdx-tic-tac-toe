@@ -6,10 +6,9 @@ import com.udacity.gamedev.tictactoe.player.Player;
 
 import java.util.List;
 
-/**
- * Created by jarrodparkes on 1/3/16.
- */
 public class RandomStrategy implements Strategy {
+
+    public static final String TAG = RandomStrategy.class.getName();
 
     public CellPosition determineBestPosition(Board board, Player forPlayer) {
         List<CellPosition> availableCells = board.emptyCellPositions();

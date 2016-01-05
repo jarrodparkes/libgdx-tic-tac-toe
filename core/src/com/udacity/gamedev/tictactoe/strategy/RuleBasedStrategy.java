@@ -6,10 +6,9 @@ import com.udacity.gamedev.tictactoe.board.*;
 import com.udacity.gamedev.tictactoe.board.Cell.CellValue;
 import com.udacity.gamedev.tictactoe.player.Player;
 
-/**
- * Created by jarrodparkes on 1/3/16.
- */
 public class RuleBasedStrategy implements Strategy {
+
+    public static final String TAG = RuleBasedStrategy.class.getName();
 
     public CellPosition determineBestPosition(Board board, Player forPlayer) {
         // middle

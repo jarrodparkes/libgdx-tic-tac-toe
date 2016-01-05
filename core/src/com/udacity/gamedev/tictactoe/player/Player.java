@@ -3,10 +3,9 @@ package com.udacity.gamedev.tictactoe.player;
 import com.udacity.gamedev.tictactoe.board.*;
 import com.udacity.gamedev.tictactoe.board.Cell.CellValue;
 
-/**
- * Created by jarrodparkes on 12/30/15.
- */
 public class Player {
+
+    public static final String TAG = Player.class.getName();
 
     public enum PlayerType {
         PLAYER_X, PLAYER_O;

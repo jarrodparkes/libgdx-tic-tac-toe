@@ -1,9 +1,8 @@
 package com.udacity.gamedev.tictactoe.board;
 
-/**
- * Created by jarrodparkes on 1/3/16.
- */
 public class CellPosition {
+
+    public static final String TAG = CellPosition.class.getName();
 
     int r;
     int c;

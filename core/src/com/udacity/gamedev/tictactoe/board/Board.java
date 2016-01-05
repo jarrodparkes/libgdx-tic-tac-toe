@@ -8,9 +8,6 @@ import com.badlogic.gdx.Gdx;
 import com.udacity.gamedev.tictactoe.Constants;
 import com.udacity.gamedev.tictactoe.board.Cell.*;
 
-/**
- * Created by jarrodparkes on 12/30/15.
- */
 public class Board {
 
     public static final String TAG = Board.class.getName();
@@ -155,7 +152,7 @@ public class Board {
             if (cells[pattern[0].r][pattern[0].c].value == cells[pattern[1].r][pattern[1].c].value &&
                     cells[pattern[1].r][pattern[1].c].value == cells[pattern[2].r][pattern[2].c].value) {
                 tempResults.setWinner(cells[pattern[0].r][pattern[0].c].value);
-                tempResults.hasWinner(true);
+                tempResults.setHasWinner(true);
                 break;
             }
         }
