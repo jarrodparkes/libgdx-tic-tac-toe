@@ -1,4 +1,4 @@
-package com.udacity.gamedev.tictactoe;
+package com.udacity.gamedev.tictactoe.board;
 
 /**
  * Created by jarrodparkes on 1/3/16.
@@ -21,5 +21,21 @@ public class CellPosition {
     @Override
     public String toString() {
         return "r: " + r + ", c: " + c;
+    }
+
+    public int getRow() {
+        return r;
+    }
+
+    public int getColumn() {
+        return c;
+    }
+
+    public void setRow(int r) {
+        this.r = r;
+    }
+
+    public void setColumn(int c) {
+        this.c = c;
     }
 }

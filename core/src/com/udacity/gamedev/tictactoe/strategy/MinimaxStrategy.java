@@ -1,11 +1,12 @@
-package com.udacity.gamedev.tictactoe;
+package com.udacity.gamedev.tictactoe.strategy;
 
-import com.badlogic.gdx.Gdx;
+import com.udacity.gamedev.tictactoe.board.*;
+import com.udacity.gamedev.tictactoe.player.*;
 
 /**
  * Created by jarrodparkes on 1/3/16.
  */
-public class MinimaxStrategy implements StrategyType {
+public class MinimaxStrategy implements Strategy {
 
     private class MinimaxResults {
         int bestScore;
@@ -23,7 +24,7 @@ public class MinimaxStrategy implements StrategyType {
     }
 
     public CellPosition determineBestPosition(Board board, Player forPlayer) {
-        MinimaxResults results = miniMax(board, 2, Integer.MIN_VALUE, Integer.MAX_VALUE, forPlayer.type);
+        MinimaxResults results = miniMax(board, 2, Integer.MIN_VALUE, Integer.MAX_VALUE, forPlayer.getPlayerType());
         return results.bestPosition;
     }
 
@@ -35,14 +36,14 @@ public class MinimaxStrategy implements StrategyType {
 
         // playerX is trying to maximize, therefore we initialize to "-infinity" and begin looking for higher scores
         // playerO is trying to minimize, therefore we initialize to "+infinity" and begin looking for lower scores
-        int bestScore = (playerType == Player.PlayerType.Player_X) ? Integer.MIN_VALUE: Integer.MAX_VALUE;
+        int bestScore = (playerType == Player.PlayerType.PLAYER_X) ? Integer.MIN_VALUE: Integer.MAX_VALUE;
         CellPosition bestPosition = new CellPosition(-1, -1);
 
         for(CellPosition position: tempBoard.emptyCellPositions()) {
 
-            Board nextBoard = new Board(tempBoard.boardAfterMove(position, playerType.value()));
+            Board nextBoard = new Board(tempBoard.boardAfterMove(position, playerType.getValue()));
 
-            if (playerType == Player.PlayerType.Player_X) {
+            if (playerType == Player.PlayerType.PLAYER_X) {
                 MinimaxResults result = new MinimaxResults(miniMax(nextBoard, depth-1, alpha, beta, playerType.oppositePlayer()));
                 if (result.bestScore > bestScore) {
                     bestScore = result.bestScore;

@@ -2,6 +2,7 @@ package com.udacity.gamedev.tictactoe;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.udacity.gamedev.tictactoe.board.CellPosition;
 
 /**
  * Created by jarrodparkes on 12/28/15.

@@ -1,4 +1,5 @@
-package com.udacity.gamedev.tictactoe;
+package com.udacity.gamedev.tictactoe.board;
+
 
 /**
  * Created by jarrodparkes on 1/3/16.
@@ -26,6 +27,10 @@ public class Cell {
         this.position = position;
         this.value = value;
     }
+
+    public CellValue getValue() {return value;}
+
+    public CellPosition getPosition() { return position; }
 }
 
 

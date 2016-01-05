@@ -6,6 +6,6 @@ public class TicTacToeGame extends Game {
 
     @Override
     public void create() {
-        setScreen(new AIScreen());
+        setScreen(new TicTacToeScreen());
     }
 }

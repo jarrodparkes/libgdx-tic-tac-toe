@@ -1,4 +1,8 @@
-package com.udacity.gamedev.tictactoe;
+package com.udacity.gamedev.tictactoe.player;
+
+import com.udacity.gamedev.tictactoe.board.Board;
+import com.udacity.gamedev.tictactoe.board.CellPosition;
+import com.udacity.gamedev.tictactoe.player.Player;
 
 /**
  * Created by jarrodparkes on 1/3/16.
@@ -10,7 +14,7 @@ public class HumanPlayer extends Player {
     }
 
     public CellPosition setCellAtPosition(CellPosition position) {
-        board.setCell(position, this.type.value());
+        getBoard().setCell(position, this.getPlayerType().getValue());
         return position;
     }
 }
