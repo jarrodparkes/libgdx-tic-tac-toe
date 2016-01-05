@@ -3,50 +3,51 @@ package com.udacity.gamedev.tictactoe;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import com.udacity.gamedev.tictactoe.Player.PlayerType;
+import com.udacity.gamedev.tictactoe.board.*;
+import com.udacity.gamedev.tictactoe.player.*;
+import com.udacity.gamedev.tictactoe.player.Player.PlayerType;
+import com.udacity.gamedev.tictactoe.strategy.*;
+import com.udacity.gamedev.tictactoe.Constants.GridPosition.*;
 
 /**
  * Created by jarrodparkes on 1/3/16.
  */
-public class Game implements GameDelegate {
+public class GameHandler {
 
-    public static final String TAG = Game.class.getName();
+    public static final String TAG = GameHandler.class.getName();
 
     Board board;
     Player player1;
     Player player2;
     Player nextPlayer;
-    GameDelegate delegate;
 
     Array<Constants.GridPosition> crosses;
     Array<Constants.GridPosition> circles;
 
-    public Game(StrategyType strategy1) {
+    public GameHandler(Strategy strategy1) {
         board = new Board();
-        player1 = new HumanPlayer(board, PlayerType.Player_X);
-        player2 = new AIPlayer(board, PlayerType.Player_O, strategy1);
+        player1 = new HumanPlayer(board, PlayerType.PLAYER_X);
+        player2 = new AIPlayer(board, PlayerType.PLAYER_O, strategy1);
         nextPlayer = player2;
 
         crosses = new Array<Constants.GridPosition>();
         circles = new Array<Constants.GridPosition>();
-
-        delegate = this;
     }
 
     public void moveAIPlayer() {
         AIPlayer currentAIPlayer = (AIPlayer) nextPlayer;
         CellPosition changedPosition = currentAIPlayer.makeAIMove();
-        delegate.didMoveAtPosition(changedPosition, currentAIPlayer.type);
+        didMoveAtPosition(changedPosition, currentAIPlayer.getPlayerType());
         checkEndGame();
     }
 
     public void moveHumanPlayer(PlayerType playerType, CellPosition position) {
-        if (playerType == PlayerType.Player_O) {
+        if (playerType == PlayerType.PLAYER_O) {
             return;
         } else {
             HumanPlayer human = (HumanPlayer) player1;
             CellPosition changedPosition = human.setCellAtPosition(position);
-            delegate.didMoveAtPosition(changedPosition, human.type);
+            didMoveAtPosition(changedPosition, human.getPlayerType());
             makeNextMove();
         }
     }
@@ -69,12 +70,12 @@ public class Game implements GameDelegate {
     public void endGame() {
         String resultString = "";
         Results gameResults = board.getResults();
-        if (gameResults.winnerType == Cell.CellValue.CROSS) {
+        if (gameResults.getWinner() == Cell.CellValue.CROSS) {
             resultString += "You win!";
         } else {
             resultString += "You lose!";
         }
-        delegate.didEnd(board, resultString);
+        didEnd(board, resultString);
     }
 
     public void reset() {
@@ -108,50 +109,48 @@ public class Game implements GameDelegate {
         }
     }
 
-    @Override
     public void didMoveAtPosition(CellPosition position, PlayerType type) {
-        if (type == PlayerType.Player_X) {
+        if (type == PlayerType.PLAYER_X) {
             crosses.add(cellPositionToGridPosition(position));
         } else {
             circles.add(cellPositionToGridPosition(position));
         }
     }
 
-    @Override
     public void didEnd(Board board, String results) {
 
     }
 
     public Constants.GridPosition cellPositionToGridPosition(CellPosition position) {
         Constants.GridPosition finalPosition = Constants.GridPosition.UPPER_LEFT;
-        if (position.r == 0) {
-            if (position.c == 0) {
+        if (position.getRow() == 0) {
+            if (position.getColumn() == 0) {
                 finalPosition = Constants.GridPosition.UPPER_LEFT;
             }
-            if (position.c == 1) {
+            if (position.getColumn() == 1) {
                 finalPosition = Constants.GridPosition.UPPER_MIDDLE;
             }
-            if (position.c == 2) {
+            if (position.getColumn() == 2) {
                 finalPosition = Constants.GridPosition.UPPER_RIGHT;
             }
-        } else if (position.r == 1) {
-            if (position.c == 0) {
+        } else if (position.getRow() == 1) {
+            if (position.getColumn() == 0) {
                 finalPosition = Constants.GridPosition.MIDDLE_LEFT;
             }
-            if (position.c == 1) {
+            if (position.getColumn() == 1) {
                 finalPosition = Constants.GridPosition.MIDDLE_MIDDLE;
             }
-            if (position.c == 2) {
+            if (position.getColumn() == 2) {
                 finalPosition = Constants.GridPosition.MIDDLE_RIGHT;
             }
         } else {
-            if (position.c == 0) {
+            if (position.getColumn() == 0) {
                 finalPosition = Constants.GridPosition.LOWER_LEFT;
             }
-            if (position.c == 1) {
+            if (position.getColumn() == 1) {
                 finalPosition = Constants.GridPosition.LOWER_MIDDLE;
             }
-            if (position.c == 2) {
+            if (position.getColumn() == 2) {
                 finalPosition = Constants.GridPosition.LOWER_RIGHT;
             }
         }
@@ -160,41 +159,43 @@ public class Game implements GameDelegate {
 
     public CellPosition gridPositionToCellPosition(Constants.GridPosition position) {
         CellPosition finalPosition = new CellPosition(0, 0);
-        if (position == Constants.GridPosition.UPPER_LEFT) {
-            finalPosition.r = 0;
-            finalPosition.c = 0;
-        }
-        if (position == Constants.GridPosition.UPPER_MIDDLE) {
-            finalPosition.r = 0;
-            finalPosition.c = 1;
-        }
-        if (position == Constants.GridPosition.UPPER_RIGHT) {
-            finalPosition.r = 0;
-            finalPosition.c = 2;
-        }
-        if (position == Constants.GridPosition.MIDDLE_LEFT) {
-            finalPosition.r = 1;
-            finalPosition.c = 0;
-        }
-        if (position == Constants.GridPosition.MIDDLE_MIDDLE) {
-            finalPosition.r = 1;
-            finalPosition.c = 1;
-        }
-        if (position == Constants.GridPosition.MIDDLE_RIGHT) {
-            finalPosition.r = 1;
-            finalPosition.c = 2;
-        }
-        if (position == Constants.GridPosition.LOWER_LEFT) {
-            finalPosition.r = 2;
-            finalPosition.c = 0;
-        }
-        if (position == Constants.GridPosition.LOWER_MIDDLE) {
-            finalPosition.r = 2;
-            finalPosition.c = 1;
-        }
-        if (position == Constants.GridPosition.LOWER_RIGHT) {
-            finalPosition.r = 2;
-            finalPosition.c = 2;
+        switch (position) {
+            case LOWER_LEFT:
+                finalPosition.setRow(2);
+                finalPosition.setColumn(0);
+                break;
+            case LOWER_MIDDLE:
+                finalPosition.setRow(2);
+                finalPosition.setColumn(1);
+                break;
+            case LOWER_RIGHT:
+                finalPosition.setRow(2);
+                finalPosition.setColumn(2);
+                break;
+            case MIDDLE_LEFT:
+                finalPosition.setRow(1);
+                finalPosition.setColumn(0);
+                break;
+            case MIDDLE_MIDDLE:
+                finalPosition.setRow(1);
+                finalPosition.setColumn(1);
+                break;
+            case MIDDLE_RIGHT:
+                finalPosition.setRow(1);
+                finalPosition.setColumn(2);
+                break;
+            case UPPER_LEFT:
+                finalPosition.setRow(0);
+                finalPosition.setColumn(0);
+                break;
+            case UPPER_MIDDLE:
+                finalPosition.setRow(0);
+                finalPosition.setColumn(1);
+                break;
+            case UPPER_RIGHT:
+                finalPosition.setRow(0);
+                finalPosition.setColumn(2);
+                break;
         }
 
         return finalPosition;

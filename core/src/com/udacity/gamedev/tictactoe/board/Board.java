@@ -1,11 +1,12 @@
-package com.udacity.gamedev.tictactoe;
+package com.udacity.gamedev.tictactoe.board;
 
 import java.util.List;
 import java.util.HashMap;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.udacity.gamedev.tictactoe.Cell.CellValue;
+import com.udacity.gamedev.tictactoe.Constants;
+import com.udacity.gamedev.tictactoe.board.Cell.*;
 
 /**
  * Created by jarrodparkes on 12/30/15.
@@ -59,7 +60,7 @@ public class Board {
     }
 
     public Boolean gameOver() {
-        return getResults().winner == true || emptyCellPositions().size() == 0;
+        return getResults().hasWinner() == true || emptyCellPositions().size() == 0;
     }
 
     public Board() {
@@ -130,7 +131,7 @@ public class Board {
         }
     }
 
-    public List<Cell> listOfCells() {
+    /*public List<Cell> listOfCells() {
         List<Cell> listOfCells = new ArrayList<Cell>();
         for (int i = 0; i < cells.length; i++) {
             for (int x = 0; x < cells[i].length; x++) {
@@ -138,7 +139,7 @@ public class Board {
             }
         }
         return listOfCells;
-    }
+    }*/
 
     public Cell cellAtPosition(CellPosition position) {
         return cells[position.r][position.c];
@@ -153,8 +154,8 @@ public class Board {
             }
             if (cells[pattern[0].r][pattern[0].c].value == cells[pattern[1].r][pattern[1].c].value &&
                     cells[pattern[1].r][pattern[1].c].value == cells[pattern[2].r][pattern[2].c].value) {
-                tempResults.winnerType = cells[pattern[0].r][pattern[0].c].value;
-                tempResults.winner = true;
+                tempResults.setWinner(cells[pattern[0].r][pattern[0].c].value);
+                tempResults.hasWinner(true);
                 break;
             }
         }

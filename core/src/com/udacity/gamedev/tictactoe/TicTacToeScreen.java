@@ -9,17 +9,18 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.udacity.gamedev.tictactoe.Constants.GridPosition;
+import com.udacity.gamedev.tictactoe.player.Player;
+import com.udacity.gamedev.tictactoe.strategy.MinimaxStrategy;
 
 /**
  * Created by jarrodparkes on 12/28/15.
  */
-public class AIScreen extends InputAdapter implements Screen {
+public class TicTacToeScreen extends InputAdapter implements Screen {
 
-    public static final String TAG = AIScreen.class.getName();
+    public static final String TAG = TicTacToeScreen.class.getName();
 
     // world viewport
     ShapeRenderer renderer;
@@ -31,7 +32,7 @@ public class AIScreen extends InputAdapter implements Screen {
     BitmapFont font;
 
     // game data
-    Game game;
+    GameHandler handler;
 
     @Override
     public void show () {
@@ -39,7 +40,7 @@ public class AIScreen extends InputAdapter implements Screen {
         renderer = new ShapeRenderer();
         renderer.setAutoShapeType(true);
         viewport = new ExtendViewport(Constants.WORLD_SIZE.x, Constants.WORLD_SIZE.y);
-        game = new Game(new MinimaxStrategy());
+        handler = new GameHandler(new MinimaxStrategy());
         // setup HUD
         batch = new SpriteBatch();
         textViewport = new ScreenViewport();
@@ -96,7 +97,7 @@ public class AIScreen extends InputAdapter implements Screen {
                 Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
                 Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
                 Constants.PLAYFIELD_LINE_THICKNESS);
-        game.render(delta, renderer);
+        handler.render(delta, renderer);
         renderer.end();
     }
 
@@ -118,7 +119,7 @@ public class AIScreen extends InputAdapter implements Screen {
 
     @Override
     public boolean touchDown (int screenX, int screenY, int pointer, int button) {
-        if (game.board.gameOver() == false) {
+        if (handler.board.gameOver() == false) {
             Vector2 worldTouch = viewport.unproject(new Vector2(screenX, screenY));
 
             for (GridPosition position : GridPosition.values()) {
@@ -133,7 +134,7 @@ public class AIScreen extends InputAdapter implements Screen {
                     inY = true;
                 }
                 if (inX && inY) {
-                    game.moveHumanPlayer(Player.PlayerType.Player_X, game.gridPositionToCellPosition(position));
+                    handler.moveHumanPlayer(Player.PlayerType.PLAYER_X, handler.gridPositionToCellPosition(position));
                     break;
                 }
             }
