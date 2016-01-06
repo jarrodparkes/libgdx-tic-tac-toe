@@ -78,34 +78,11 @@ public class GameHandler {
     }
 
     public void render(float delta, ShapeRenderer renderer) {
-        // draw playfield
+        // draw reset "button"
         renderer.setColor(Constants.PLAYFIELD_COLOR);
         renderer.circle(Constants.RESET_CENTER.x, Constants.RESET_CENTER.y, Constants.CIRCLE_RADIUS, 20);
-        renderer.setColor(Constants.PLAYFIELD_COLOR);
-        renderer.rectLine(
-                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_LINE_THICKNESS);
-        renderer.rectLine(
-                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_LINE_THICKNESS);
-        renderer.rectLine(
-                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_LINE_THICKNESS);
-        renderer.rectLine(
-                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
-                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
-                Constants.PLAYFIELD_LINE_THICKNESS);
+        // draw playfield
+        renderPlayField(delta, renderer);
         // draw an X (needs 150 by 150 space?)
         for (Constants.GridPosition gp: crosses) {
             renderer.setColor(Constants.CROSS_COLOR);
@@ -129,6 +106,34 @@ public class GameHandler {
             renderer.setColor(Constants.BACKGROUND_COLOR);
             renderer.circle(gp.position.x, gp.position.y, Constants.CIRCLE_RADIUS - Constants.CIRCLE_THICKNESS, 20);
         }
+    }
+
+    public void renderPlayField(float delta, ShapeRenderer renderer) {
+        renderer.setColor(Constants.PLAYFIELD_COLOR);
+        renderer.rectLine(
+                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_LINE_THICKNESS);
+        renderer.rectLine(
+                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_LINE_THICKNESS);
+        renderer.rectLine(
+                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_CENTER.x - Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_LINE_THICKNESS);
+        renderer.rectLine(
+                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_CENTER.y - Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_CENTER.x + Constants.PLAYFIELD_GRID_SIZE * 0.5f,
+                Constants.PLAYFIELD_CENTER.y + Constants.PLAYFIELD_GRID_SIZE * 1.5f,
+                Constants.PLAYFIELD_LINE_THICKNESS);
     }
 
     public void didMoveAtPosition(CellPosition position, PlayerType type) {
