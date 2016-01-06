@@ -128,16 +128,6 @@ public class Board {
         }
     }
 
-    /*public List<Cell> listOfCells() {
-        List<Cell> listOfCells = new ArrayList<Cell>();
-        for (int i = 0; i < cells.length; i++) {
-            for (int x = 0; x < cells[i].length; x++) {
-                listOfCells.add(cells[i][x]);
-            }
-        }
-        return listOfCells;
-    }*/
-
     public Cell cellAtPosition(CellPosition position) {
         return cells[position.r][position.c];
     }
